@@ -1,0 +1,2 @@
+# sc-paneview
+SuperCollider PaneView
