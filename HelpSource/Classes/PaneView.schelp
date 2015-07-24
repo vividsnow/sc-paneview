@@ -1,0 +1,77 @@
+title:: PaneView
+summary:: Resizable View with arbitrary number of resizable horizontal/vertical panes(aka tiles)
+categories:: GUI>Views
+related:: Classes/HLayout, Classes/VLayout
+keyword:: pane tile
+
+description::
+Pane(tile) manager for views.
+
+classmethods::
+
+method:: new
+
+Creates a new instance of PaneView and makes it a child of another View("parent")
+PaneView instance automatically follows size on parent View.
+
+argument:: parent
+The instance of View new PaneView will become a child of.
+
+argument:: orientation
+\horizontal or \vertical
+
+argument:: orientation
+\horizontal or \vertical
+
+argument:: num_of_panes
+number of panes to create (default:2)
+
+argument:: partition
+\equal(default) or array(size of num_of_panes) of relative sizes (eg. [1,3,1])
+
+argument:: handle_size
+size in pixels of inter-pane space (default:10)
+
+argument:: handle_line_size
+size in pixels of inter-pane visual guide line (default:2)
+
+argument:: handle_line_color
+color of inter-pane visual guide line  (default: Color.gray(0.5))
+
+returns:
+An View
+
+methods::
+
+private:: vertical, horizontal
+
+METHOD:: container
+returns instance of View which holds panes
+
+METHOD:: panes
+returns array of panes (instances of View)
+
+METHOD:: handles
+returns array of inter-pane spaces (instances of View)
+
+EXAMPLES::
+
+CODE::
+(
+w = Window().front;
+PaneView(w.view, \horizontal, 5).panes.do({ |p|
+    PaneView(p, \vertical, 2.rrand(9)) });
+)
+::
+
+CODE::
+( // color fun
+w = Window().front;
+v = PaneView(w.view, \horizontal, 5, (1..5).scramble, 8,1, Color.rand);
+v.panes.do({ |p| var sv = PaneView(p, \vertical, 2.rrand(5), \equal, 8, 1, Color.rand);
+	p.background_(Color.rand);
+	sv.panes.do({|sp| sp.background_(Color.rand) });
+	sv.handles.do({|h| h.background_(Color.rand)}) });
+v.handles.do({|h| h.background_(Color.rand)});
+)
+::
