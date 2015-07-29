@@ -65,6 +65,21 @@ PaneView(w.view, \horizontal, 5).panes.do({ |p|
 ::
 
 CODE::
+( // responsive FlowLayout inside panes
+w = Window().front;
+PaneView(w.view, \horizontal, 2, [1,2]).panes.do({|p|
+	var i = ScrollView(p, p.bounds.extent).hasBorder_(false).resize_(5);
+    i.addFlowLayout;
+	{ View(i,100@100).background_(Color.rand) }!10; // populate
+	i.onResize_({ |v|
+        var d = v.decorator;
+        d.bounds = v.bounds.extent@(0@0);
+        d.reset;
+        v.children.do(d.place(_)) }) });
+)
+::
+
+CODE::
 ( // color fun
 w = Window().front;
 v = PaneView(w.view, \horizontal, 5, (1..5).scramble, 8,1, Color.rand);
