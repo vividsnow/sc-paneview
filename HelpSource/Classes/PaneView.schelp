@@ -90,3 +90,29 @@ v.panes.do({ |p| var sv = PaneView(p, \vertical, 2.rrand(5), \equal, 8, 1, Color
 v.handles.do({|h| h.background_(Color.rand)});
 )
 ::
+
+CODE::
+( // example mix with (H|V)Layouts and FlowLayout 
+w = Window("pane view", { |wh|
+	Rect.aboutPoint(Window.availableBounds.center, wh.x/2, wh.y/2)
+}.(800@600)).front;
+p = PaneView(w.view, \horizontal, 3, [1,2,1]);
+Slider2D(p.panes[0], p.panes[0].bounds.extent).resize_(5);
+{|v|
+	p.panes[1].layout_(VLayout(Knob(), HLayout(Knob(), v)));
+	{|p|
+		{|p| Knob(p, p.bounds.extent).resize_(5) }.(p.panes[0]);
+		{|p| Slider2D(p, p.bounds.extent).resize_(5) }.(p.panes[1]);
+	}.(PaneView(v, \vertical, 2));
+}.(View());
+{|p|
+	var sp = PaneView(p, \vertical, 2);
+	{ |p|
+		var i = ScrollView(p, p.bounds.extent).hasBorder_(false).resize_(5);
+		i.addFlowLayout;
+		i.onResize_({|v| var d = v.decorator;
+			d.bounds = v.bounds.extent@(0@0); d.reset; v.children.do(d.place(_))});
+		{Knob(i)}!20 }.(sp.panes[0]);
+	{|p| p.layout_(HLayout(*({Slider()}!4))) }.(sp.panes[1])
+}.(p.panes[2]);
+)
