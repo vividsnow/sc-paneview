@@ -91,10 +91,10 @@ CODE::
 ( // responsive FlowLayout inside panes
 w = Window().front;
 PaneView(w.view, \horizontal, 2, [1,2]).panes.do({|p|
-	var i = ScrollView(p, p.bounds.extent).hasBorder_(false).resize_(5);
+    var i = ScrollView(p, p.bounds.extent).hasBorder_(false).resize_(5);
     i.addFlowLayout;
-	{ View(i,100@100).background_(Color.rand) }!10; // populate
-	i.onResize_({ |v|
+    { View(i,100@100).background_(Color.rand) }!10; // populate
+    i.onResize_({ |v|
         var d = v.decorator;
         d.bounds = v.bounds.extent@(0@0);
         d.reset;
@@ -107,9 +107,9 @@ CODE::
 w = Window().front;
 v = PaneView(w.view, \horizontal, 5, (1..5).scramble, 8,1, Color.rand);
 v.panes.do({ |p| var sv = PaneView(p, \vertical, 2.rrand(5), \equal, 8, 1, Color.rand);
-	p.background_(Color.rand);
-	sv.panes.do({|sp| sp.background_(Color.rand) });
-	sv.handles.do({|h| h.background_(Color.rand)}) });
+    p.background_(Color.rand);
+    sv.panes.do({|sp| sp.background_(Color.rand) });
+    sv.handles.do({|h| h.background_(Color.rand)}) });
 v.handles.do({|h| h.background_(Color.rand)});
 )
 ::
@@ -176,7 +176,7 @@ w = Window("pane view", 800@600 !? { |wh|
     Rect.aboutPoint(Window.availableBounds.center, wh.x/2, wh.y/2)
 }).front;
 w.layout_(HLayout(
-	[PaneView.hfrom(*({Slider().orientation_(\vertical)}!10)).asView, stretch:4],
-	[PaneView.vfrom(*({Knob()}!10)).asView, stretch:1]
+    [PaneView.hfrom(*({Slider().orientation_(\vertical)}!10)).asView, stretch:4],
+    [PaneView.vfrom(*({Knob()}!10)).asView, stretch:1]
 ));
 )
