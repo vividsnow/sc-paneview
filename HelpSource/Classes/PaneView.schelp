@@ -39,13 +39,36 @@ argument:: handle_line_color
 color of inter-pane visual guide line  (default: Color.gray(0.5))
 
 returns:
-An View
+An PaneView
+
+method:: vfrom
+
+Shortcut - creates vertical PaneView from a list of children
+
+argument:: children
+List of Layouts/Views-derived instances.
+
+returns:
+An PaneView
+
+method:: hfrom
+
+Shortcut - creates horizontal PaneView from a list of children
+
+argument:: children
+List of Layouts/Views-derived instances.
+
+returns:
+An PaneView
 
 methods::
 
 private:: vertical, horizontal
 
 METHOD:: container
+returns instance of View which holds panes
+
+METHOD:: asView
 returns instance of View which holds panes
 
 METHOD:: panes
@@ -144,4 +167,16 @@ p.panes[2] !? {|p|
             d.bounds = v.bounds.extent@(0@0); d.reset; v.children.do(d.place(_))});
         {Knob(i)}!20 };
     sp.panes[1] !? {|p| p.layout_(HLayout(*({Slider()}!4))) } };
+)
+::
+
+CODE::
+( // using vfrom/hfrom shortcuts
+w = Window("pane view", 800@600 !? { |wh|
+    Rect.aboutPoint(Window.availableBounds.center, wh.x/2, wh.y/2)
+}).front;
+w.layout_(HLayout(
+	[PaneView.hfrom(*({Slider().orientation_(\vertical)}!10)).asView, stretch:4],
+	[PaneView.vfrom(*({Knob()}!10)).asView, stretch:1]
+));
 )

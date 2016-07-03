@@ -1,17 +1,31 @@
 PaneView {
 	var <parent, <orientation, <num_of_panes, <partition,
 	    <handle_size, <handle_line_size, <handle_line_color,
-	    <panes, <handles, <container;
-	*new {|parent orientation=\horizontal num_of_panes=2 partition=\equal handle_size=10, handle_line_size=2, handle_line_color|
+	    <panes, <handles, <container, <view;
+	*new {|parent orientation=\horizontal num_of_panes=2 partition=\equal
+		   handle_size=10, handle_line_size=2, handle_line_color|
+		var children = [];
+		if(num_of_panes.isArray, {
+			children = num_of_panes;
+			num_of_panes = children.size });
 		^super.newCopyArgs(
 			parent, orientation, num_of_panes, partition,
-			handle_size, handle_line_size, handle_line_color).init }
-	init {
+			handle_size, handle_line_size, handle_line_color).init(children) }
+	*vfrom {|...children| ^this.new(nil, \vertical, children) }
+	*hfrom {|...children| ^this.new(nil, \horizontal, children) }
+	init {|children|
 		if(handle_line_color.isNil, { handle_line_color = Color.gray(0.5) });
+		if(parent.isNil, {
+			view = View().minSize_(Size(*((num_of_panes-1)*handle_size).dup))
+			.onResize_({|v| v.children[0].bounds_(0@0@v.bounds.extent) });
+			parent = view });
 		container = View(parent, parent.bounds.extent).resize_(5);
 		panes = nil!num_of_panes;
 		handles = nil!(num_of_panes-1);
-		this.perform(orientation) }
+		this.perform(orientation);
+		children.do({|i,k| this.panes[k].layout_(i.isKindOf(Layout).if(
+			{ i }, { HLayout(i).spacing_(0).margins_(0) }))})}
+	asView { ^(view ?? container) }
 	horizontal { var pv = container, hw = handle_size, hwl = handle_line_size,
 		vw = (pv.bounds.width - ((num_of_panes - 1) * hw)),
 		vwp = if(partition == \equal, {
