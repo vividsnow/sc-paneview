@@ -61,7 +61,7 @@ List of Layouts/Views-derived instances.
 returns:
 An PaneView
 
-methods::
+instancemethods::
 
 private:: vertical, horizontal
 
@@ -180,3 +180,4 @@ w.layout_(HLayout(
     [PaneView.vfrom(*({Knob()}!10)).asView, stretch:1]
 ));
 )
+::
