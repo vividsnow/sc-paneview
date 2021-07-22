@@ -2,6 +2,6 @@
 name: "PaneView",
 summary: "Resizable View with arbitrary number of resizable horizontal/vertical panes(aka tiles)",
 version: "0.0.2",
-schelp: "PaneView.html",
+schelp: "PaneView",
 author: "vividsnow"
 )
